@@ -1,0 +1,132 @@
+.App {
+  background-image: url("./assets/images/back.svg");
+}
+.logo {
+  background: linear-gradient(101.36deg, #e65c00 3.9%, #ffe981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.polygon {
+  background-image: url("./assets/images/polygon.png");
+}
+
+.orange-yellow-gradient-border {
+  border-image: linear-gradient(98.67deg, #e65c00 14.51%, #f9d423 93.39%);
+  /*-moz-border-image: -moz-linear-gradient(*/
+  /*  98.67deg,*/
+  /*  #e65c00 14.51%,*/
+  /*  #f9d423 93.39%*/
+  /*);*/
+  /*-webkit-border-image: -webkit-linear-gradient(*/
+  /*  98.67deg,*/
+  /*  #e65c00 14.51%,*/
+  /*  #f9d423 93.39%*/
+  /*);*/
+  /*border-image-slice: 1;*/
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(#e65c00 14.51%),
+    color-stop(#f9d423 93.39%)
+  );
+  background-image: -moz-linear-gradient(
+    98.67deg,
+    #e65c00 14.51%,
+    #f9d423 93.39%
+  );
+  padding: 2px;
+}
+
+button.orange-button {
+  background: linear-gradient(98.67deg, #e65c00 14.51%, #f9d423 93.39%);
+}
+
+a.orange-button {
+  background: linear-gradient(98.67deg, #e65c00 14.51%, #f9d423 93.39%);
+}
+
+.glowing-text {
+  -webkit-transition: text-shadow 0.2s linear;
+  -moz-transition: text-shadow 0.2s linear;
+  -ms-transition: text-shadow 0.2s linear;
+  -o-transition: text-shadow 0.2s linear;
+  transition: text-shadow 0.2s linear;
+}
+
+.glowing-text:hover {
+  text-shadow: 0 0 3px white;
+}
+.hexagon {
+  left: -5px;
+  top: -5px;
+  width: 180px;
+  height: 200px;
+  position: relative;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  padding: 10px;
+}
+.hexagon2 {
+  width: 190px;
+  height: 210px;
+  position: relative;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  background: linear-gradient(to bottom right, #20d5f5, #ff2390);
+  padding: 10px;
+}
+.hexagon-small {
+  /*left: -50%;*/
+  /*top: -50%;*/
+  /*transform: translate(-50%, -50%);*/
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 45px;
+  height: 50px;
+  /*position: relative;*/
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  padding: 10px;
+}
+.hexagon-small2 {
+  width: 49px;
+  height: 54px;
+  position: relative;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  background: linear-gradient(to bottom right, #20d5f5, #ff2390);
+  padding: 10px;
+}
+
+.hexagon .img {
+  position: absolute;
+  background-repeat: round;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 180px;
+  height: 200px;
+}
+.hexagon-small .img {
+  position: absolute;
+  background-repeat: round;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 50px;
+}
+
+.animate-scroll {
+  animation: animateScroll 10s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animateScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(calc(-212px * 80 + 50% - 212px / 2));
+  }
+}
