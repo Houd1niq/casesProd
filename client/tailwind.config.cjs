@@ -7,6 +7,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        "main-yellow": "#E1F664",
+        "main-red": "#FD7171",
         "mini-profile-menu-bg": "#21212B",
         "scroller-bg": "#1E1E28",
         background: "#17171F",

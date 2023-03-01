@@ -3,10 +3,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import { casesApi } from "../services/casesApi/queryWithRefresh";
 import userReducer from "./slices/userSlice";
+import applicationReducer from "./slices/applicationSlice";
 
 const store = configureStore({
   reducer: {
     authReducer,
+    applicationReducer,
     userReducer,
     [casesApi.reducerPath]: casesApi.reducer,
   },

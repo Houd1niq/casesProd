@@ -15,7 +15,9 @@ model User {
   email             String     @unique
   name              String     @unique
   password          String
-  dayStrak            Int     @default(0)
+  dayStreak           Int     @default(0)
+  isFreeCaseAvailable Boolean @default(false)
+  isDayStreakActive  Boolean  @default(false)
   minutesCounter      Int     @default(0)
   hashedRT          String?
   confirmationCode  String?
@@ -62,6 +64,8 @@ model UserItem {
   userId    String
   item      Item     @relation(fields: [itemId], references: [id])
   itemId    Int
+  isSold     Boolean  @default(false)
+  isObtained Boolean @default(false)
   timestamp DateTime @default(now())
 }
 

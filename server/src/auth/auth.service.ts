@@ -74,6 +74,7 @@ export class AuthService {
           password: hash,
           isEmailConfirmed: false,
           confirmationCode,
+          balance: 1000, // TODO: remove this for production
         },
       });
       await this.emailService.sendConfirmationCode(dto.email, confirmationCode);

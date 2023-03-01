@@ -1,6 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { authApiSlice } from "../../services/casesApi/authApiSlice";
+import {
+  triggerSuccessNotification,
+  triggerWarningNotification,
+} from "../../utils/notificationUtilities";
 
 export const ConfirmEmail = () => {
   const navigate = useNavigate();
@@ -14,8 +18,19 @@ export const ConfirmEmail = () => {
   }
 
   useEffect(() => {
+    if (response.isError && response.error) {
+      const error = response.error as {
+        data: { message: string; statusCode: number; error: string };
+        status: number;
+      };
+      if (error.data.statusCode === 403) {
+        triggerWarningNotification("Code is invalid");
+      }
+    }
+
     if (response.isSuccess) {
       navigate("/", { replace: true });
+      triggerSuccessNotification("Email confirmed successfully");
     }
   }, [response]);
 

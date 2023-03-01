@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User, userApiSlice } from "../../services/casesApi/userApiSlice";
-import { baseUrl } from "../../services/casesApi/queryWithRefresh";
 import { logOut } from "./authSlice";
 
 const initialState: { user: null | User } = { user: null };
@@ -21,10 +20,6 @@ const userSlice = createSlice({
       userApiSlice.endpoints.getProfileInfo.matchFulfilled,
       (state, action) => {
         state.user = action.payload;
-        if (action.payload.user_profile_image) {
-          state.user.user_profile_image =
-            baseUrl + "/" + action.payload.user_profile_image;
-        }
       }
     );
   },

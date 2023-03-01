@@ -2,7 +2,7 @@ import React from "react";
 import person from "../assets/images/person.png";
 
 export const ProfileHexagon: React.FC<{ link: string }> = ({ link }) => {
-  if (!link) {
+  if (!link || link.split("/").at(-1) === "null") {
     return (
       <div className="hexagon2">
         <div className="hexagon">

@@ -1,5 +1,19 @@
 import { baseUrl, casesApi } from "./queryWithRefresh";
 
+export interface LastOpenedBox {
+  timestamp: string;
+  user: {
+    id: string;
+    name: string;
+  };
+  item: {
+    id: number;
+    name: string;
+    image: string;
+    price: number;
+  };
+}
+
 export interface IBox {
   id: number;
   name: string;
@@ -49,6 +63,13 @@ export const boxesApiSlice = casesApi.injectEndpoints({
     rollBox: build.query<{ itemId: number }, number>({
       query: (boxId) => ({
         url: "boxes/roll/" + boxId,
+        method: "GET",
+      }),
+    }),
+
+    getLastBoxes: build.query<LastOpenedBox[], void>({
+      query: () => ({
+        url: "boxes/last",
         method: "GET",
       }),
     }),

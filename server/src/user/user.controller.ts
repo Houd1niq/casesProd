@@ -1,7 +1,9 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
   Req,
   UploadedFile,
@@ -29,6 +31,26 @@ interface ImageInterface {
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get('user/:id')
+  async getUser(@Param('id') id: string) {
+    return await this.userService.getUser(id);
+  }
+
+  @Get('get-count')
+  async getCount() {
+    return await this.userService.getCount();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('change-username')
+  async changeUsername(
+    @Req() req: Request,
+    @Body() body: { username: string },
+  ) {
+    const user = req.user as PayloadType;
+    return await this.userService.changeUsername(body.username, user.id);
+  }
 
   @Get('profile')
   @HttpCode(200)

@@ -13,7 +13,7 @@ interface refreshResponse {
 }
 
 let url = "http://localhost:3000";
-if (import.meta.env.IS_PROD === true) {
+if (import.meta.env.PROD) {
   url = window.location.origin;
 }
 

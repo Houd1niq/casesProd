@@ -2,11 +2,13 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { userApiSlice } from "../services/casesApi/userApiSlice";
 import { useAppSelector } from "../store/store";
 import { ProfileHexagon } from "../components/ProfileHexagon";
-import settings from "../assets/images/setting-icon.svg";
+import { SettingsItem } from "../components/SettingsItem";
 
-export const Settings = () => {
+export const SettingsPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [triggerSetImage, response] = userApiSlice.useSetProfileImageMutation();
+  const [triggerChangeUsername, changeUsernameResponse] =
+    userApiSlice.useChangeUsernameMutation();
 
   const user = useAppSelector((state) => state.userReducer.user);
 
@@ -32,8 +34,8 @@ export const Settings = () => {
   return (
     <div className="flex flex-col text-white items-center font-sf-ui">
       <div className="mx-auto sm:mt-12 mt-5">
-        {user && user.user_profile_image ? (
-          <ProfileHexagon link={user.user_profile_image}></ProfileHexagon>
+        {user && user.profile_image ? (
+          <ProfileHexagon link={user.profile_image}></ProfileHexagon>
         ) : (
           <ProfileHexagon link=""></ProfileHexagon>
         )}
@@ -51,41 +53,34 @@ export const Settings = () => {
         edit pfp
       </label>
       <ul className="mt-2">
-        <li className="flex items-center">
-          <div className="flex ">
-            <img
-              src={settings}
-              className="mr-1 cursor-pointer"
-              alt="settings"
-            />
-            <span className="font-light">username:</span>
-          </div>
-          <span className="font-medium ml-6">{user && user.name}</span>
-        </li>
-        <li className="flex items-center">
-          <div className="flex ">
-            <img
-              src={settings}
-              className="mr-1 cursor-pointer"
-              alt="settings"
-            />
-            <span className="font-light">email:</span>
-          </div>
-          <span className="font-medium ml-6">{user && user.email}</span>
-        </li>
-        <li className="flex items-center">
-          <div className="flex ">
-            <img
-              src={settings}
-              className="mr-1 cursor-pointer"
-              alt="settings"
-            />
-            <span className="font-light">wallet:</span>
-          </div>
-          <span className="font-medium ml-6">
-            {user && user.wallet ? user.wallet : "not linked"}
-          </span>
-        </li>
+        <SettingsItem
+          parameter="username"
+          value={user?.name || "Loading..."}
+          handler={triggerChangeUsername}
+          response={changeUsernameResponse}
+        ></SettingsItem>
+        <SettingsItem
+          parameter="email"
+          value={user?.email || "Loading..."}
+          handler={() => {}}
+          response={{
+            isError: false,
+            isLoading: false,
+            isSuccess: false,
+            status: "",
+          }}
+        ></SettingsItem>
+        <SettingsItem
+          parameter="wallet"
+          value={user?.wallet || "wallet is not linked"}
+          handler={() => {}}
+          response={{
+            isError: false,
+            isLoading: false,
+            isSuccess: false,
+            status: "",
+          }}
+        ></SettingsItem>
       </ul>
     </div>
   );

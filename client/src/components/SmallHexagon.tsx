@@ -2,7 +2,8 @@ import React from "react";
 import person from "../assets/images/person.png";
 
 export const SmallHexagon: React.FC<{ link: string }> = ({ link }) => {
-  if (!link) {
+  console.log(link.split("/").at(-1) === "null");
+  if (!link || link.split("/").at(-1) === "null") {
     return (
       <div className="hexagon-small2">
         <div className="hexagon-small">
@@ -10,7 +11,7 @@ export const SmallHexagon: React.FC<{ link: string }> = ({ link }) => {
             <img
               src={person}
               alt=""
-              className="absolute left-[50%] top-[50%] transform translate-x-[-60%] -translate-y-[55%] z-20 w-[30px] h-[30px]"
+              className="absolute left-[50%] top-[50%] transform translate-x-[-50%] -translate-y-[50%] z-20 w-[25px] h-[25px]"
             />
           </div>
         </div>

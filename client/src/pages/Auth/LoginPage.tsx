@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { authApiSlice } from "../../services/casesApi/authApiSlice";
+import { triggerWarningNotification } from "../../utils/notificationUtilities";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -11,10 +12,27 @@ export const LoginPage = () => {
 
   async function loginHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (email.length < 3) {
+      triggerWarningNotification("Email is not valid");
+      return;
+    }
+    if (password.length < 4) {
+      triggerWarningNotification("Password must be at least 4 characters long");
+      return;
+    }
     await loginTrigger({ email, password });
   }
 
   useEffect(() => {
+    console.log(loginResponse);
+
+    if (loginResponse.error && loginResponse.error) {
+      const error = loginResponse.error as {
+        data: { message: string; statusCode: number; error: string };
+        status: number;
+      };
+      triggerWarningNotification(error.data.message);
+    }
     if (loginResponse.isSuccess) {
       navigate("/", { replace: true });
     }

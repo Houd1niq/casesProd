@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { authApiSlice } from "../../services/casesApi/authApiSlice";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  triggerSuccessNotification,
+  triggerWarningNotification,
+} from "../../utils/notificationUtilities";
 
 export const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -12,11 +16,24 @@ export const RegisterPage = () => {
 
   async function registerHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (email.length < 3) {
+      triggerWarningNotification("Email is not valid");
+      return;
+    }
+    if (password.length < 4) {
+      triggerWarningNotification("Password must be at least 4 characters long");
+      return;
+    }
+    if (nickname.length < 4) {
+      triggerWarningNotification("Nickname must be at least 4 characters long");
+      return;
+    }
     await registerTrigger({ email, password, name: nickname });
   }
 
   useEffect(() => {
     if (registerResponse.isSuccess) {
+      triggerSuccessNotification("Check your email to confirm your account");
       navigate("../confirm-email");
     }
   }, [registerResponse]);

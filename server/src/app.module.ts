@@ -8,15 +8,22 @@ import { diskStorage } from 'multer';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { BoxesModule } from './boxes/boxes.module';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
+    GatewayModule,
     PrismaModule,
     AuthModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'), // Путь до папки с файлами
-      serveRoot: '/uploads', // URL-адрес, по которому можно получить доступ к файлам
-    }),
+    ServeStaticModule.forRoot(
+      {
+        rootPath: join(__dirname, '..', 'uploads'), // Путь до папки с файлами
+        serveRoot: '/uploads', // URL-адрес, по которому можно получить доступ к файлам
+      },
+      {
+        rootPath: join(__dirname, '..', 'static'),
+      },
+    ),
     MulterModule.register({
       storage: diskStorage({
         destination: join(__dirname, '..', 'public'), // Путь до папки с файлами, куда будут сохраняться загруженные файлы

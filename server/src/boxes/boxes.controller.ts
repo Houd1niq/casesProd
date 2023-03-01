@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { BoxesService } from './boxes.service';
 import { AuthGuard } from '@nestjs/passport';
 import { PayloadType } from '../auth/strategies';
@@ -26,6 +18,11 @@ export class BoxesController {
   async rollBox(@Req() req: Request, @Param('boxId') boxId: string) {
     const user = req.user as PayloadType;
     return await this.boxesService.rollBox(user.id, Number(boxId));
+  }
+
+  @Get('last')
+  async getLastBoxes() {
+    return await this.boxesService.getLastBoxes();
   }
 
   @Post('add')

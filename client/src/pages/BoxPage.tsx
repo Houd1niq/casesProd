@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
 import { boxesApiSlice } from "../services/casesApi/boxesApiSlice";
 import { OrangeButton } from "../components/OrangeButton";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { userApiSlice } from "../services/casesApi/userApiSlice";
+import { WebSocketContext } from "../services/SocketContext";
+import { rollDuration } from "../constants/constant";
+import { triggerWarningNotification } from "../utils/notificationUtilities";
 
 interface Item {
   id: number;
@@ -20,6 +23,8 @@ export const BoxPage = () => {
   const box = boxes?.find((box) => box.name === name);
   const [isScrolling, setIsScrolling] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const socket = useContext(WebSocketContext);
+  const [randomOffset, setRandomOffset] = useState(0);
 
   function rollBoxHandler() {
     if (
@@ -33,8 +38,30 @@ export const BoxPage = () => {
   }
 
   useEffect(() => {
+    console.log(rollResponse);
+    if (rollResponse.isError && rollResponse.error) {
+      console.log("here");
+      const error = rollResponse.error as {
+        data: {
+          message: string;
+          statusCode: number;
+          error: string;
+        };
+        status: number;
+      };
+      if (error.status === 400) {
+        console.log("here2");
+        triggerWarningNotification(error.data.message);
+      }
+    }
+
     if (rollResponse.isSuccess && rollResponse.status === "fulfilled") {
+      socket.emit("boxOpened");
       console.log("here", rollResponse);
+      let randomOffset: number = Math.floor(Math.random() * 85);
+      const randomDirection = Math.floor(Math.random() * 2);
+      if (randomDirection === 0) randomOffset -= randomOffset * 2;
+      setRandomOffset(randomOffset);
       if (box && box.CaseItem) {
         const generatingItemsPool: Item[] = [];
         for (let i = 0; i < 100; i++) {
@@ -66,7 +93,7 @@ export const BoxPage = () => {
         setIsScrolling(true);
         setTimeout(() => {
           setIsScrolling(false);
-        }, 11000);
+        }, rollDuration);
       }
       updateProfileTrigger("");
     }
@@ -74,13 +101,14 @@ export const BoxPage = () => {
 
   return (
     <div className="flex flex-col items-center mt-11 font-sf-ui">
-      <div className="bg-scroller-bg w-[80%] max-w-[1300px] relative overflow-hidden p-5 h-[250px] flex items-center rounded-[10px]">
+      <div className="bg-scroller-bg w-[80%] max-w-[1225px] border-x-[20px] border-transparent relative overflow-hidden p-5 h-[250px] flex items-center rounded-[10px]">
         {itemsPool.length > 0 && (
           <span className="absolute h-full w-[1px] border-l-2 left-[50%] border-orange-400 z-10"></span>
         )}
         {itemsPool.length > 0 && (
           <div
             ref={containerRef}
+            style={{ marginLeft: `${randomOffset}px` }}
             className="flex gap-3 animate-scroll w-full relative"
           >
             {itemsPool.map((item, idx) => {

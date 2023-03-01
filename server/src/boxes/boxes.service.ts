@@ -30,6 +30,32 @@ export class BoxesService {
     });
   }
 
+  async getLastBoxes() {
+    return await this.prisma.userItem.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+      take: 20,
+      select: {
+        timestamp: true,
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+        item: {
+          select: {
+            name: true,
+            image: true,
+            price: true,
+            id: true,
+          },
+        },
+      },
+    });
+  }
+
   async rollBox(userId: string, boxId: number) {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -51,7 +77,6 @@ export class BoxesService {
     const balance = Number.parseFloat(String(user.balance));
     if (!box) throw new BadRequestException('Box not found');
     if (balance < box.price) throw new BadRequestException('Not enough money');
-    console.log(balance, box.price);
     const random = Math.random();
     const caseItems = await this.prisma.caseItem.findMany({
       where: {
@@ -66,7 +91,6 @@ export class BoxesService {
     for (const caseItem of caseItems) {
       sum += caseItem.drop_rate;
       if (random <= sum) {
-        console.log(random, sum, caseItem.itemId);
         await this.prisma.user.update({
           where: {
             id: userId,
