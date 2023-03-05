@@ -62,6 +62,7 @@ export class BoxesService {
         id: userId,
       },
       select: {
+        dayStreak: true,
         balance: true,
       },
     });
@@ -74,8 +75,19 @@ export class BoxesService {
         price: true,
       },
     });
-    const balance = Number.parseFloat(String(user.balance));
-    if (!box) throw new BadRequestException('Box not found');
+    let balance: number = Number.parseFloat(String(user.balance));
+    if (user.dayStreak === 7 && boxId === 1) {
+      balance += box.price;
+      await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          dayStreak: 0,
+        },
+      });
+    }
+    if (!box) throw new BadRequestException('ConfigureBoxPage not found');
     if (balance < box.price) throw new BadRequestException('Not enough money');
     const random = Math.random();
     const caseItems = await this.prisma.caseItem.findMany({
@@ -105,6 +117,22 @@ export class BoxesService {
             itemId: caseItem.itemId,
           },
         });
+        const userCaseCounter = await this.prisma.userItem.count({
+          where: {
+            userId,
+          },
+        });
+        if (userCaseCounter === 1) {
+          const update = await this.prisma.user.update({
+            where: {
+              id: userId,
+            },
+            data: {
+              isDayStreakActive: true,
+            },
+          });
+          console.log(update);
+        }
         return { itemId: caseItem.itemId };
       }
     }

@@ -49,8 +49,8 @@ export const BoxPage = () => {
         };
         status: number;
       };
-      if (error.status === 400) {
-        console.log("here2");
+
+      if (error.status === 400 || error.status === 401) {
         triggerWarningNotification(error.data.message);
       }
     }

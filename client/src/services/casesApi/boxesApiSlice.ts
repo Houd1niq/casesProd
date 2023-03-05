@@ -52,14 +52,6 @@ export const boxesApiSlice = casesApi.injectEndpoints({
       },
     }),
 
-    addItem: build.mutation<{}, string>({
-      query: () => ({
-        url: "boxes/add",
-        method: "POST",
-        body: { id: "1", itemId: "1" },
-      }),
-    }),
-
     rollBox: build.query<{ itemId: number }, number>({
       query: (boxId) => ({
         url: "boxes/roll/" + boxId,

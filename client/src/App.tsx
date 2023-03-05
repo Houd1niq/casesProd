@@ -13,9 +13,16 @@ import { BoxPage } from "./pages/BoxPage";
 import { AccountPage } from "./pages/AccountPage";
 import { socket, WebSocketProvider } from "./services/SocketContext";
 import { UserPage } from "./pages/UserPage";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "./components/ScrollToTop";
+import { AdminLayout } from "./pages/Admin/AdminLayout";
+import { AdminLoginPage } from "./pages/Admin/AdminLoginPage";
+import { AdminPage } from "./pages/Admin/AdminPage";
+import { ConfigureUsers } from "./pages/Admin/ConfigureUsers";
+import { ConfigureItems } from "./pages/Admin/ConfigureItems";
+import { ConfigureBoxes } from "./pages/Admin/ConfigureBoxes";
+import { ConfigureBoxPage } from "./pages/Admin/ConfigureBoxPage";
 function App() {
   return (
     <WebSocketProvider value={socket}>
@@ -34,6 +41,7 @@ function App() {
             <Route path="user/:id" element={<UserPage></UserPage>}></Route>
             <Route path="account" element={<AccountPage></AccountPage>}></Route>
           </Route>
+
           <Route path="/auth" element={<AuthLayout></AuthLayout>}>
             <Route path="login" element={<LoginPage></LoginPage>}></Route>
             <Route
@@ -43,6 +51,30 @@ function App() {
             <Route
               path="signup"
               element={<RegisterPage></RegisterPage>}
+            ></Route>
+          </Route>
+
+          <Route path="admin" element={<AdminLayout></AdminLayout>}>
+            <Route path="" element={<AdminPage></AdminPage>}></Route>
+            <Route
+              path="login"
+              element={<AdminLoginPage></AdminLoginPage>}
+            ></Route>
+            <Route
+              path="box/:boxId"
+              element={<ConfigureBoxPage></ConfigureBoxPage>}
+            ></Route>
+            <Route
+              path="users"
+              element={<ConfigureUsers></ConfigureUsers>}
+            ></Route>
+            <Route
+              path="items"
+              element={<ConfigureItems></ConfigureItems>}
+            ></Route>
+            <Route
+              path="boxes"
+              element={<ConfigureBoxes></ConfigureBoxes>}
             ></Route>
           </Route>
         </Routes>

@@ -1,5 +1,10 @@
 import { casesApi } from "./queryWithRefresh";
 
+type AuthDto = {
+  name: string;
+  password: string;
+};
+
 type RegisterDto = {
   email: string;
   password: string;
@@ -33,6 +38,21 @@ export const authApiSlice = casesApi.injectEndpoints({
         url: "auth/signup",
         method: "POST",
         body: registerDto,
+      }),
+    }),
+
+    adminLogin: build.mutation<{ accessToken: string }, AuthDto>({
+      query: (body) => ({
+        url: "admin/signin",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    adminLogout: build.mutation({
+      query: () => ({
+        url: "admin/logout",
+        method: "POST",
       }),
     }),
 

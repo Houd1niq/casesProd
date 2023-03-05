@@ -5,11 +5,53 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LFC</title>
-    <script type="module" crossorigin src="/assets/index-cd0f0d3f.js"></script>
-    <link rel="stylesheet" href="/assets/index-de12274c.css">
+    <script type="module" crossorigin src="/assets/index-9eadad73.js"></script>
+    <link rel="stylesheet" href="/assets/index-899de2ff.css">
   </head>
   <body>
     <div id="root"></div>
+
+    <svg
+      style="visibility: hidden; position: absolute"
+      width="0"
+      height="0"
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+    >
+      <defs>
+        <filter id="hex-small">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9  "
+            result="goo"
+          />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+        </filter>
+      </defs>
+    </svg>
+
+    <svg
+      style="visibility: hidden; position: absolute"
+      width="0"
+      height="0"
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+    >
+      <defs>
+        <filter id="hex-big">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+          <feColorMatrix
+            in="blur"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9  "
+            result="goo"
+          />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+        </filter>
+      </defs>
+    </svg>
     
   </body>
 </html>

@@ -5,9 +5,10 @@ export const OrangeButton: React.FC<{
   children: React.ReactNode;
   type?: "button" | "submit" | "reset";
   onClick?: (...args: any[]) => void;
+  disabled?: boolean;
   isLink?: { to: string };
   className?: string;
-}> = ({ children, isLink, onClick, type, className }) => {
+}> = ({ children, isLink, onClick, type, className, disabled }) => {
   if (isLink) {
     return (
       <Link
@@ -25,6 +26,7 @@ export const OrangeButton: React.FC<{
 
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className={
         "orange-button text-white px-7 py-1 rounded-[5px] font-regular font-sf-ui border border-yellow-300" +

@@ -5,7 +5,10 @@ export interface PublicUserInfo {
   name: string;
   profile_image: string | null;
   user_items: {
+    userItemId: number;
     id: number;
+    isSold: boolean;
+    isObtained: boolean;
     name: string;
     image: string;
     price: number;
@@ -21,11 +24,16 @@ export interface User {
   wallet: string | null;
   user_cases: [];
   minutesCounter: number;
-  dayStrak: number;
+  dayStreak: number;
+  isDayStreakActive: boolean;
+  isFreeCaseAvailable: boolean;
   user_items: {
+    userItemId: number;
     id: number;
     timestamp: string;
     name: string;
+    isSold: boolean;
+    isObtained: boolean;
     image: string;
     price: number;
   }[];
@@ -49,9 +57,28 @@ export const userApiSlice = casesApi.injectEndpoints({
         };
       },
     }),
+
     getUserCount: build.query<{ usersCount: number }, void>({
       query: () => ({
         url: "user/get-count",
+      }),
+    }),
+
+    checkIn: build.mutation<void, void>({
+      query: () => ({
+        url: "user/check-in",
+        method: "POST",
+      }),
+    }),
+
+    setUserItemState: build.mutation<
+      void,
+      { userItemId: number; isObtained: boolean; isSold: boolean }
+    >({
+      query: (body) => ({
+        url: "user/set-item-state",
+        method: "POST",
+        body,
       }),
     }),
 
@@ -78,6 +105,7 @@ export const userApiSlice = casesApi.injectEndpoints({
         body: formData,
       }),
     }),
+
     changeUsername: build.mutation<{}, string>({
       query: (body) => ({
         url: "user/change-username",

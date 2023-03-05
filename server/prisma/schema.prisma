@@ -69,6 +69,12 @@ model UserItem {
   timestamp DateTime @default(now())
 }
 
+model Admin {
+  id       Int      @id @default(autoincrement())
+  password String
+  name     String   @unique
+}
+
 model UserCase {
   id     Int    @id @default(autoincrement())
   user   User   @relation(fields: [userId], references: [id])

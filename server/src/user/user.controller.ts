@@ -17,7 +17,6 @@ import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { join } from 'path';
 import { createWriteStream } from 'fs';
-import * as fs from 'fs';
 
 interface ImageInterface {
   fieldname: string;
@@ -32,9 +31,32 @@ interface ImageInterface {
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Post('set-item-state')
+  async setItemState(
+    @Body()
+    body: {
+      userItemId: number;
+      isSold: boolean;
+      isObtained: boolean;
+    },
+  ) {
+    return await this.userService.setItemState(
+      body.userItemId,
+      body.isSold,
+      body.isObtained,
+    );
+  }
+
   @Get('user/:id')
   async getUser(@Param('id') id: string) {
     return await this.userService.getUser(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('check-in')
+  async checkIn(@Req() req: Request) {
+    const user = req.user as PayloadType;
+    return await this.userService.checkIn(user.id);
   }
 
   @Get('get-count')
@@ -66,10 +88,6 @@ export class UserController {
   async uploadFile(@UploadedFile() file: ImageInterface, @Req() req: Request) {
     const user = req.user as PayloadType;
     const filePath = join(__dirname, '..', '..', 'uploads', `${user.id}.jpg`);
-    console.log(filePath);
-    if (fs.existsSync(filePath)) {
-      console.log('here');
-    }
     const writeStream = createWriteStream(filePath);
     writeStream.write(file.buffer);
     writeStream.end();

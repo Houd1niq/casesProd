@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../store/store";
 import { logOut, setAccessToken } from "../../store/slices/authSlice";
+import { adminLogout, setAdminToken } from "../../store/slices/adminSlice";
 
 interface refreshResponse {
   data: {
@@ -17,6 +18,8 @@ if (import.meta.env.PROD) {
   url = window.location.origin;
 }
 
+let isAdmin = false;
+
 export const baseUrl = url;
 
 const baseQuery = fetchBaseQuery({
@@ -24,7 +27,12 @@ const baseQuery = fetchBaseQuery({
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
-    const token = state.authReducer.accessToken;
+    let token = state.authReducer.accessToken;
+    if (!token) {
+      token = state.adminReducer.adminAccessToken;
+      if (token) isAdmin = true;
+    }
+    console.log(token);
     if (token) headers.set("authorization", `Bearer ${token}`);
     return headers;
   },
@@ -41,9 +49,11 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
       extraOptions
     )) as refreshResponse;
     if (refreshResult.data && refreshResult.data.accessToken) {
+      if (isAdmin) api.dispatch(setAdminToken(refreshResult.data.accessToken));
       api.dispatch(setAccessToken(refreshResult.data.accessToken));
     } else {
       api.dispatch(logOut());
+      api.dispatch(adminLogout());
     }
     result = await baseQuery(args, api, extraOptions);
   }

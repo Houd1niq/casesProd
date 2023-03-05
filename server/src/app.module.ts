@@ -9,6 +9,7 @@ import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { BoxesModule } from './boxes/boxes.module';
 import { GatewayModule } from './gateway/gateway.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { GatewayModule } from './gateway/gateway.module';
     }),
     UserModule,
     BoxesModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [],

@@ -22,7 +22,13 @@ export const UserPage: React.FC = () => {
           {user ? user.name : "Loading..."}
         </h2>
 
-        <div className="flex flex-wrap justify-center max-w-[750px] text-white font-sf-ui gap-3 mb-5">
+        <div className="flex flex-wrap justify-center min-w-[320px] max-w-[750px] text-white font-sf-ui gap-3 mb-5 relative">
+          {user && user.user_items && user.user_items.length > 0 && (
+            <div className="left-corner -left-[25px]"></div>
+          )}
+          {user && user.user_items && user.user_items.length > 0 && (
+            <div className="right-corner -right-[30px]"></div>
+          )}
           {user && user.user_items && user.user_items.length > 0 ? (
             user.user_items.map((item, idx) => {
               return <ProfileItem key={`${item.id}-${idx}`} item={item} />;

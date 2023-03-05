@@ -25,13 +25,13 @@ export class AuthService {
       },
     });
     if (!candidate) {
-      throw new ForbiddenException('Пользователь не найден');
+      throw new ForbiddenException('User not found');
     }
     if (candidate.isEmailConfirmed) {
-      return { isEmailConfirmed: true, message: 'Почта уже подтверждена' };
+      return { isEmailConfirmed: true, message: 'Email already confirmed' };
     }
     if (candidate.confirmationCode !== code) {
-      throw new ForbiddenException('Неверный код подтверждения');
+      throw new ForbiddenException('Not valid confirmation code');
     }
     await this.prisma.user.update({
       where: {
@@ -42,7 +42,7 @@ export class AuthService {
         confirmationCode: null,
       },
     });
-    return { isEmailConfirmed: true, message: 'Почта подтверждена' };
+    return { isEmailConfirmed: true, message: 'Email is confirmed' };
   }
 
   async signIn(dto: AuthDto): Promise<TokenTypes> {
@@ -52,10 +52,10 @@ export class AuthService {
       },
     });
     if (!candidate) {
-      throw new ForbiddenException('Неверный логин или пароль');
+      throw new ForbiddenException('Invalid email or password');
     }
     const compare = await bcrypt.compare(dto.password, candidate.password);
-    if (!compare) throw new ForbiddenException('Неверный логин или пароль');
+    if (!compare) throw new ForbiddenException('Invalid email or password');
     const tokens = await this.getTokens(candidate.id, candidate.email);
     await this.updateHashRtInDB(candidate.email, tokens.refresh_token);
     return tokens;
@@ -84,7 +84,7 @@ export class AuthService {
     } catch (e) {
       console.log(e);
       throw new ForbiddenException(
-        'Пользователь с такими логином уже существует',
+        'User with this email already exists or something went wrong',
       );
     }
   }

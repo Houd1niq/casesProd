@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { userApiSlice } from "../services/casesApi/userApiSlice";
 
 interface ItemInterface {
+  userItemId: number;
   id: number;
   name: string;
   image: string;
   price: number;
+  isObtained: boolean;
+  isSold: boolean;
 }
 
 export const ProfileItem: React.FC<{ item: ItemInterface }> = ({ item }) => {
-  const [isSold, setIsSold] = React.useState(false);
-  const [isObtained, setIsObtained] = React.useState(false);
+  const [isSold, setIsSold] = React.useState(item.isSold);
+  const [isObtained, setIsObtained] = React.useState(item.isObtained);
   const actionClass = isObtained || isSold ? "opacity-10" : "opacity-100";
+  const [setItemStateTrigger, setItemStateResponse] =
+    userApiSlice.useSetUserItemStateMutation();
+  console.log(item);
+
+  useEffect(() => {
+    if (isObtained || isSold) {
+      setItemStateTrigger({
+        userItemId: item.userItemId,
+        isObtained: isObtained,
+        isSold: isSold,
+      });
+    }
+  }, [isObtained, isSold]);
 
   return (
     <div

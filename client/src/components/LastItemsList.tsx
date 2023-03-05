@@ -56,7 +56,10 @@ export const LastItemsList: React.FC = () => {
       {lastItems &&
         lastItems.map((lastOpenedBox) => {
           return (
-            <div className="group relative " key={lastOpenedBox.timestamp}>
+            <div
+              className="group relative overflow-hidden mb-10"
+              key={lastOpenedBox.timestamp}
+            >
               <img
                 onClick={() => {
                   if (user && user.id === lastOpenedBox.user.id) {
@@ -65,11 +68,11 @@ export const LastItemsList: React.FC = () => {
                   }
                   navigate("/user/" + lastOpenedBox.user.id);
                 }}
-                className="group-hover:opacity-[0.08] transition-all cursor-pointer w-[80px] h-[80px] rounded-[6px] mb-10"
+                className="group-hover:opacity-[0.08] transition-all cursor-pointer w-[80px] h-[80px] rounded-[6px]"
                 alt="item-image"
                 src={baseUrl + "/" + lastOpenedBox.item.image}
               ></img>
-              <p className="hidden whitespace-nowrap group-hover:block absolute top-[50%] left-[50%] w-auto transform -translate-x-1/2 text-[10px] font-light text-white ">
+              <p className="hidden whitespace-nowrap group-hover:block absolute top-[70%] left-[50%] w-auto transform -translate-x-1/2 text-[10px] font-light text-white ">
                 id: {lastOpenedBox.user.id}
               </p>
             </div>

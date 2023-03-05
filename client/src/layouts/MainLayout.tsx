@@ -22,7 +22,6 @@ export const MainLayout = () => {
   useEffect(() => {
     if (user)
       setInterval(() => {
-        console.log("emit");
         socket.emit("minutePass", { userId: user.id });
       }, 60000);
   }, [user]);

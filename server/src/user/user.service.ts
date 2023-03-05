@@ -1,11 +1,62 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CronJob } from 'cron';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  private readonly job: CronJob;
+
+  constructor(private prisma: PrismaService) {
+    this.job = new CronJob(
+      '0 0 0 * * *',
+      async () => {
+        await this.prisma.user.updateMany({
+          where: {
+            isDayStreakActive: false,
+          },
+          data: {
+            isDayStreakActive: true,
+          },
+        });
+
+        await this.prisma.user.updateMany({
+          where: {
+            isEmailConfirmed: false,
+          },
+          data: {
+            confirmationCode: null,
+          },
+        });
+      },
+      null,
+      true,
+      'Europe/Moscow',
+    );
+    this.job.start();
+  }
 
   // get public user info
+  async checkIn(id: string) {
+    const caseCount = await this.prisma.userItem.count({
+      where: {
+        userId: id,
+      },
+    });
+    if (caseCount === 0) {
+      throw new BadRequestException('You need to open at least one case');
+    }
+
+    await this.prisma.user.update({
+      where: { id },
+      data: {
+        isDayStreakActive: false,
+        dayStreak: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
   async getUser(id: string) {
     try {
       const userInfo = await this.prisma.user.findUnique({
@@ -16,6 +67,7 @@ export class UserService {
           profile_image: true,
           user_items: {
             select: {
+              id: true,
               item: {
                 select: {
                   id: true,
@@ -31,12 +83,24 @@ export class UserService {
       return {
         ...userInfo,
         user_items: userInfo.user_items.reverse().map((item) => {
-          return { ...item.item };
+          return { ...item.item, userItemId: item.id };
         }),
       };
     } catch (e) {
       throw new BadRequestException("User doesn't exist");
     }
+  }
+
+  async setItemState(id: number, isSold: boolean, isObtained: boolean) {
+    return await this.prisma.userItem.update({
+      where: {
+        id: id,
+      },
+      data: {
+        isSold: isSold,
+        isObtained: isObtained,
+      },
+    });
   }
 
   async getCount() {
@@ -82,10 +146,15 @@ export class UserService {
         user_cases: true,
         profile_image: true,
         minutesCounter: true,
-        dayStrak: true,
+        dayStreak: true,
+        isDayStreakActive: true,
+        isFreeCaseAvailable: true,
         user_items: {
           select: {
+            id: true,
             timestamp: true,
+            isSold: true,
+            isObtained: true,
             item: {
               select: {
                 id: true,
@@ -101,7 +170,13 @@ export class UserService {
     return {
       ...userInfo,
       user_items: userInfo.user_items.reverse().map((item) => {
-        return { ...item.item, timestamp: item.timestamp };
+        return {
+          ...item.item,
+          timestamp: item.timestamp,
+          userItemId: item.id,
+          isSold: item.isSold,
+          isObtained: item.isObtained,
+        };
       }),
     };
   }

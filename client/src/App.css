@@ -51,16 +51,23 @@ a.orange-button {
   left: -5px;
   top: -5px;
   width: 200px;
-  height: 200px;
+  height: 190px;
   position: relative;
   clip-path: polygon(25% 0, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0 50%);
   padding: 10px;
 }
 
+.hexagon-parent {
+  filter: url(#hex-big);
+}
+.hexagon-parent-small {
+  filter: url(#hex-small);
+}
+
 .hexagon2 {
   inset: auto;
   width: 210px;
-  height: 210px;
+  height: 200px;
   position: relative;
   clip-path: polygon(25% 0, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0 50%);
   background: conic-gradient(
@@ -82,13 +89,13 @@ a.orange-button {
   left: 2px;
   top: 2px;
   width: 45px;
-  height: 45px;
+  height: 41px;
   clip-path: polygon(25% 0, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0 50%);
 }
 
 .hexagon-small2 {
   width: 49px;
-  height: 49px;
+  height: 45px;
   position: relative;
   clip-path: polygon(25% 0, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0 50%);
   background: conic-gradient(
@@ -134,4 +141,18 @@ a.orange-button {
   100% {
     transform: translateX(calc(-212px * 80 + (50% - 212px / 2)));
   }
+}
+
+.right-corner {
+  position: absolute;
+  background-image: url("./assets/images/RightCorner.svg");
+  width: 330px;
+  height: 280px;
+}
+
+.left-corner {
+  position: absolute;
+  background-image: url("./assets/images/LeftCorner.svg");
+  width: 330px;
+  height: 280px;
 }

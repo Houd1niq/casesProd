@@ -3,6 +3,9 @@ import { userApiSlice } from "../services/casesApi/userApiSlice";
 import { useAppSelector } from "../store/store";
 import { ProfileHexagon } from "../components/ProfileHexagon";
 import { SettingsItem } from "../components/SettingsItem";
+import settings from "../assets/images/setting-icon.svg";
+import twitterLogo from "../assets/images/twitter.svg";
+import discordLogo from "../assets/images/discord.svg";
 
 export const SettingsPage = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -82,6 +85,20 @@ export const SettingsPage = () => {
           }}
         ></SettingsItem>
       </ul>
+      <div className="flex gap-5">
+        <div className="flex mb-5 mt-5">
+          <img src={settings} />
+          <a href="#">
+            <img alt="twitter logo" src={twitterLogo} alt="discord" />
+          </a>
+        </div>
+        <div className="flex mb-5 mt-5">
+          <img src={settings} />
+          <a href="#">
+            <img al="discord logo" src={discordLogo} alt="discord" />
+          </a>
+        </div>
+      </div>
     </div>
   );
 };
