@@ -87,15 +87,15 @@ export const SettingsPage = () => {
       </ul>
       <div className="flex gap-5">
         <div className="flex mb-5 mt-5">
-          <img src={settings} />
+          <img alt="settings-icon" src={settings} />
           <a href="#">
-            <img alt="twitter logo" src={twitterLogo} alt="discord" />
+            <img src={twitterLogo} alt="discord" />
           </a>
         </div>
         <div className="flex mb-5 mt-5">
-          <img src={settings} />
+          <img alt="settings-icon" src={settings} />
           <a href="#">
-            <img al="discord logo" src={discordLogo} alt="discord" />
+            <img src={discordLogo} alt="discord" />
           </a>
         </div>
       </div>
