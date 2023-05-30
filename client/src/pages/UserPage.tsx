@@ -22,7 +22,7 @@ export const UserPage: React.FC = () => {
           {user ? user.name : "Loading..."}
         </h2>
 
-        <div className="flex flex-wrap justify-center min-w-[320px] max-w-[750px] text-white font-sf-ui gap-3 mb-5 relative">
+        <div className="flex flex-wrap justify-center min-w-[320px] max-w-[680px] text-white font-sf-ui gap-3 mb-5 relative">
           {user && user.user_items && user.user_items.length > 0 && (
             <div className="left-corner -left-[25px]"></div>
           )}
@@ -31,7 +31,19 @@ export const UserPage: React.FC = () => {
           )}
           {user && user.user_items && user.user_items.length > 0 ? (
             user.user_items.map((item, idx) => {
-              return <ProfileItem key={`${item.id}-${idx}`} item={item} />;
+              return (
+                <div
+                  key={item.image}
+                  className="bg-nft-bg flex flex-col items-center relative p-4 rounded-[9px] mt-5 text-[20px]"
+                >
+                  <img
+                    alt="item-image"
+                    className="w-[125px] transition-all h-[125px] rounded-[6px]"
+                    src={item.image}
+                  />
+                  <p className="font-medium transition-all mt-1">{item.name}</p>
+                </div>
+              );
             })
           ) : (
             <div>no items</div>

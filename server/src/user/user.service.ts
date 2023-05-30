@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CronJob } from 'cron';
 
@@ -57,6 +61,16 @@ export class UserService {
     });
   }
 
+  async setWallet(wallet: string, id: string) {
+    console.log(wallet, id);
+    return await this.prisma.user.update({
+      where: { id: id },
+      data: {
+        wallet: wallet,
+      },
+    });
+  }
+
   async getUser(id: string) {
     try {
       const userInfo = await this.prisma.user.findUnique({
@@ -91,7 +105,40 @@ export class UserService {
     }
   }
 
-  async setItemState(id: number, isSold: boolean, isObtained: boolean) {
+  async setItemState(
+    id: number,
+    isSold: boolean,
+    isObtained: boolean,
+    userId: string,
+  ) {
+    const userItem = await this.prisma.userItem.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        item: {
+          select: {
+            price: true,
+          },
+        },
+        userId: true,
+      },
+    });
+    if (userItem.userId !== userId) {
+      throw new ForbiddenException('You are not the owner of this item');
+    }
+
+    if (isSold) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          balance: {
+            increment: userItem.item.price,
+          },
+        },
+      });
+    }
+
     return await this.prisma.userItem.update({
       where: {
         id: id,

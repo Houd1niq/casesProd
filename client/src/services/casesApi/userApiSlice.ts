@@ -64,6 +64,14 @@ export const userApiSlice = casesApi.injectEndpoints({
       }),
     }),
 
+    setWallet: build.mutation<void, string>({
+      query: (wallet) => ({
+        url: "user/set-wallet",
+        method: "POST",
+        body: { wallet: wallet },
+      }),
+    }),
+
     checkIn: build.mutation<void, void>({
       query: () => ({
         url: "user/check-in",

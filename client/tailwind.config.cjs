@@ -10,16 +10,17 @@ module.exports = {
         "main-yellow": "#E1F664",
         "main-red": "#FD7171",
         "mini-profile-menu-bg": "#21212B",
-        "scroller-bg": "#1E1E28",
-        background: "#17171F",
-        "bg-light": "#242430",
+        "scroller-bg": "#1E1E1E",
+        background: "#131313",
+        "bg-light": "#262626",
         "text-gray": "#4D4D66",
         "text-light": "#A2A2B7",
         "profile-bg": "#393939",
-        "nft-bg": "#25252F"
+        "nft-bg": "#1E1E1E", // временно scroller bg
+        "main-blue":"#1EC0FC"
       },
       linearGradientColors: {
-        "main-orange": "linear-gradient(101.36deg, #E65C00 3.9%, #F9D423 100%)",
+        "main-orange": "linear-gradient(101.36deg, #1472FF 3.9%, #23ECF9 100%)",
       },
       fontFamily: {
         garet: ["Garet", "ui-sans-serif"],

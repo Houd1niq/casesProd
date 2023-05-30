@@ -103,7 +103,7 @@ export const BoxPage = () => {
     <div className="flex flex-col items-center mt-11 font-sf-ui">
       <div className="bg-scroller-bg w-[80%] max-w-[1225px] border-x-[20px] border-transparent relative overflow-hidden p-5 h-[250px] flex items-center rounded-[10px]">
         {itemsPool.length > 0 && (
-          <span className="absolute h-full w-[1px] border-l-2 left-[50%] border-orange-400 z-10"></span>
+          <span className="absolute h-full w-[1px] border-l-2 left-[50%] border-main-blue z-10"></span>
         )}
         {itemsPool.length > 0 && (
           <div

@@ -70,6 +70,7 @@ export const SettingsItem: React.FC<{
                 return;
               }
               handler(inputValue);
+              alert("here");
               setInputValue("");
               setIsChanging(false);
             }}

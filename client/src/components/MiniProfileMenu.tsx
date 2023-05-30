@@ -23,7 +23,10 @@ export const MiniProfileMenu: React.FC = () => {
           Balance: <span className="font-light">{user.balance}</span>
         </div>
         <div className="font-light text-[12px]">
-          Wallet: {user.wallet ? user.wallet : "wallet is not linked"}
+          Wallet:{" "}
+          {user.wallet
+            ? user.wallet.slice(0, 4) + "..." + user.wallet.slice(-4)
+            : "wallet is not linked"}
         </div>
       </div>
     );

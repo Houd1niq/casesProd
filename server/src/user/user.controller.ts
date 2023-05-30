@@ -31,6 +31,14 @@ interface ImageInterface {
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(AuthGuard('jwt'))
+  @Post('set-wallet')
+  async setWallet(@Req() req: Request, @Body() body: { wallet: string }) {
+    const user = req.user as PayloadType;
+    return await this.userService.setWallet(body.wallet, user.id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Post('set-item-state')
   async setItemState(
     @Body()
@@ -39,11 +47,14 @@ export class UserController {
       isSold: boolean;
       isObtained: boolean;
     },
+    @Req() req: Request,
   ) {
+    const user = req.user as PayloadType;
     return await this.userService.setItemState(
       body.userItemId,
       body.isSold,
       body.isObtained,
+      user.id,
     );
   }
 

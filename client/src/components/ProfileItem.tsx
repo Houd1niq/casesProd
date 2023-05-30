@@ -15,19 +15,15 @@ export const ProfileItem: React.FC<{ item: ItemInterface }> = ({ item }) => {
   const [isSold, setIsSold] = React.useState(item.isSold);
   const [isObtained, setIsObtained] = React.useState(item.isObtained);
   const actionClass = isObtained || isSold ? "opacity-10" : "opacity-100";
+  const [updateProfile] = userApiSlice.useLazyGetProfileInfoQuery();
   const [setItemStateTrigger, setItemStateResponse] =
     userApiSlice.useSetUserItemStateMutation();
-  console.log(item);
 
   useEffect(() => {
-    if (isObtained || isSold) {
-      setItemStateTrigger({
-        userItemId: item.userItemId,
-        isObtained: isObtained,
-        isSold: isSold,
-      });
+    if (setItemStateResponse.isSuccess) {
+      updateProfile("");
     }
-  }, [isObtained, isSold]);
+  }, [setItemStateResponse]);
 
   return (
     <div
@@ -61,6 +57,11 @@ export const ProfileItem: React.FC<{ item: ItemInterface }> = ({ item }) => {
         <button
           onClick={() => {
             setIsObtained(true);
+            setItemStateTrigger({
+              userItemId: item.userItemId,
+              isObtained: true,
+              isSold: isSold,
+            });
           }}
           className="hidden group-hover:block absolute top-[57%] transition-all bg-main-yellow w-[140px] h-10 rounded-[6px]"
         >
@@ -71,6 +72,11 @@ export const ProfileItem: React.FC<{ item: ItemInterface }> = ({ item }) => {
         <button
           onClick={() => {
             setIsSold(true);
+            setItemStateTrigger({
+              userItemId: item.userItemId,
+              isObtained: isObtained,
+              isSold: true,
+            });
           }}
           className="hidden group-hover:block absolute top-[75%] transition-all bg-main-red w-[140px] h-10 rounded-[6px] mt-1.5"
         >

@@ -2,35 +2,39 @@
   background-image: url("./assets/images/back.svg");
 }
 
+:root {
+  --main-gradient: linear-gradient(101.36deg, #1472ff 3.9%, #23ecf9 100%);
+}
+
 .gradient-text {
-  background: linear-gradient(90.66deg, #e65c00 5.93%, #f9d423 100%);
+  background: var(--main-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-border {
-  background: linear-gradient(#1e1e28 0 0) padding-box,
-    /*this is your grey background*/
-      linear-gradient(6deg, #e65c00 14.51%, #f9d423 93.39%);
+  background: linear-gradient(#2d2d2d 0 0) padding-box,
+    linear-gradient(165.36deg, #1472ff 3.9%, #23ecf9 100%);
+
   color: #313149;
   padding: 10px;
   border: 1px solid transparent;
 }
 
 .logo {
-  background: linear-gradient(101.36deg, #e65c00 3.9%, #ffe981 100%);
+  background: var(--main-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 button.orange-button {
-  background: linear-gradient(98.67deg, #e65c00 14.51%, #f9d423 93.39%);
+  background: var(--main-gradient);
 }
 
 a.orange-button {
-  background: linear-gradient(98.67deg, #e65c00 14.51%, #f9d423 93.39%);
+  background: var(--main-gradient);
 }
 
 .glowing-text {

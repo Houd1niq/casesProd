@@ -13,6 +13,9 @@ export const SettingsPage = () => {
   const [triggerChangeUsername, changeUsernameResponse] =
     userApiSlice.useChangeUsernameMutation();
 
+  const [triggerSetWallet, setWalletResponse] =
+    userApiSlice.useSetWalletMutation();
+
   const user = useAppSelector((state) => state.userReducer.user);
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
@@ -76,13 +79,8 @@ export const SettingsPage = () => {
         <SettingsItem
           parameter="wallet"
           value={user?.wallet || "wallet is not linked"}
-          handler={() => {}}
-          response={{
-            isError: false,
-            isLoading: false,
-            isSuccess: false,
-            status: "",
-          }}
+          handler={triggerSetWallet}
+          response={setWalletResponse}
         ></SettingsItem>
       </ul>
       <div className="flex gap-5">

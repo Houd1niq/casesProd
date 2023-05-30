@@ -63,15 +63,15 @@ export const MainLayout = () => {
               to="/"
               className="logo flex items-center font-garet font-bold text-[32px]"
             >
-              LFC
               <img className="w-[60px]" src={logo} alt="logo"></img>
+              <span className="pt-2">JINNS</span>
             </Link>
             <ul className="flex gap-[60px]">
               <li className="text-center hidden sm:block font-sf-ui font-light">
                 <p className="text-text-gray text-[12px]">
                   LFC 24h volume
                   <br />
-                  <span className="text-text-light text-[14px]">657 sol</span>
+                  <span className="text-text-light text-[14px]">0 sol</span>
                 </p>
               </li>
 
@@ -79,7 +79,7 @@ export const MainLayout = () => {
                 <p className="text-text-gray text-[12px]">
                   Solana Network
                   <br />
-                  <span className="text-text-light text-[14px]">563 TPS</span>
+                  <span className="text-text-light text-[14px]">3160 TPS</span>
                 </p>
               </li>
 
@@ -87,7 +87,7 @@ export const MainLayout = () => {
                 <p className="text-text-gray text-[12px]">
                   SOL/USD
                   <br />
-                  <span className="text-text-light text-[14px]">$23.29</span>
+                  <span className="text-text-light text-[14px]">$23.51</span>
                 </p>
               </li>
             </ul>

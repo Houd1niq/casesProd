@@ -21,8 +21,12 @@ import { AdminModule } from './admin/admin.module';
         rootPath: join(__dirname, '..', 'uploads'), // Путь до папки с файлами
         serveRoot: '/uploads', // URL-адрес, по которому можно получить доступ к файлам
       },
+      // {
+      //   rootPath: join(__dirname, '..', 'static'),
+      // },
       {
-        rootPath: join(__dirname, '..', 'static'),
+        rootPath: join(__dirname, '..', '.well-known'),
+        serveRoot: '/.well-known',
       },
     ),
     MulterModule.register({

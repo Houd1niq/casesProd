@@ -64,9 +64,11 @@ export class BoxesService {
       select: {
         dayStreak: true,
         balance: true,
+        profit_multiplier: true,
       },
     });
     if (!user) throw new BadRequestException('User not found');
+
     const box = await this.prisma.case.findUnique({
       where: {
         id: boxId,
@@ -76,6 +78,7 @@ export class BoxesService {
       },
     });
     let balance: number = Number.parseFloat(String(user.balance));
+
     if (user.dayStreak === 7 && boxId === 1) {
       balance += box.price;
       await this.prisma.user.update({
@@ -90,6 +93,7 @@ export class BoxesService {
     if (!box) throw new BadRequestException('ConfigureBoxPage not found');
     if (balance < box.price) throw new BadRequestException('Not enough money');
     const random = Math.random();
+
     const caseItems = await this.prisma.caseItem.findMany({
       where: {
         caseId: boxId,
@@ -100,7 +104,12 @@ export class BoxesService {
       },
     });
     let sum = 0;
-    for (const caseItem of caseItems) {
+    const modifiedCaseItems = this.changeDropRate(
+      caseItems,
+      user.profit_multiplier,
+    );
+
+    for (const caseItem of modifiedCaseItems) {
       sum += caseItem.drop_rate;
       if (random <= sum) {
         await this.prisma.user.update({
@@ -147,5 +156,54 @@ export class BoxesService {
         drop_rate: 0.05,
       },
     });
+  }
+
+  changeDropRate(
+    probabilities: { itemId: number; drop_rate: number }[],
+    MULTIPLIER: number,
+  ): { itemId: number; drop_rate: number }[] {
+    const average = 1 / probabilities.length;
+    const probabilitiesObj = probabilities.reduce(
+      (acc: { [key: number]: number }, curr) => {
+        const key = curr;
+        if (!acc[key.drop_rate]) {
+          acc[key.drop_rate] = 1;
+        } else {
+          acc[key.drop_rate] += 1;
+        }
+        return acc;
+      },
+      {},
+    );
+
+    let uniqModifiedProbArr = Object.entries(probabilitiesObj).map(
+      ([key, n]) => {
+        const prob = Number(key);
+        const coeff = average / prob;
+        if (prob > average)
+          return [prob / (1 + (MULTIPLIER - 1) * (1 - coeff)), n];
+        else return [prob * (1 + (MULTIPLIER - 1) * coeff), n];
+      },
+    );
+    const newSum = uniqModifiedProbArr.reduce((acc, [prob, n]) => {
+      return acc + prob * n;
+    }, 0);
+
+    uniqModifiedProbArr = uniqModifiedProbArr.map(([prob, n]) => {
+      return [prob / newSum, n];
+    });
+
+    const resArr = [];
+    for (let i = 0; i < uniqModifiedProbArr.length; i++) {
+      const [prob, n] = uniqModifiedProbArr[i];
+      for (let j = 0; j < n; j++) {
+        resArr.push(prob);
+      }
+    }
+    for (let i = 0; i < resArr.length; i++) {
+      probabilities[i].drop_rate = resArr[i];
+    }
+    console.log(probabilities);
+    return probabilities;
   }
 }

@@ -14,7 +14,7 @@ export const OrangeButton: React.FC<{
       <Link
         to={isLink.to}
         className={
-          "block text-white orange-button px-7 py-1 rounded-[5px] font-regular font-sf-ui border border-yellow-300" +
+          "block text-white orange-button px-7 py-1 rounded-[5px] font-regular font-sf-ui border border-main-blue" +
           " " +
           (className || "")
         }
@@ -29,7 +29,7 @@ export const OrangeButton: React.FC<{
       disabled={disabled}
       onClick={onClick}
       className={
-        "orange-button text-white px-7 py-1 rounded-[5px] font-regular font-sf-ui border border-yellow-300" +
+        "orange-button text-white px-7 py-1 rounded-[5px] font-regular font-sf-ui border border-main-blue" +
         " " +
         (className || "")
       }
